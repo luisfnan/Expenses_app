@@ -10,7 +10,7 @@ class ExpensesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.builder( // Creates a scrollable list view
         itemCount: expensesList.length,
         itemBuilder: (ctx, index) => ExpenseItem(expensesList[index]));
   }
