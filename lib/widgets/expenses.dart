@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expense_tracker/entities/category.dart';
 import 'package:flutter/material.dart';
 import '../entities/expense.dart';
@@ -28,10 +30,14 @@ class _ExpensesState extends State<Expenses> {
   _openExpensesOverlay() {
     showModalBottomSheet(
       context: context,
-      builder: (ctx) => const NewExpense(),
+      builder: (ctx) => NewExpense(_addExpense),
     );
   }
-
+  void _addExpense(Expense expense){
+    setState(() {
+      _registerExpenses.insert(0, expense);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

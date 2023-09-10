@@ -5,7 +5,9 @@ import 'package:expense_tracker/entities/expense.dart';
 import 'package:flutter/material.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense(this.onAddExpense, {super.key});
+
+  final void Function(Expense expense) onAddExpense;
 
   @override
   State<StatefulWidget> createState() => _NewExpenseState();
@@ -54,7 +56,16 @@ class _NewExpenseState extends State<NewExpense> {
         ),
       );
       return;
-    } else{Navigator.pop(context);}
+    } else {
+      widget.onAddExpense(
+        Expense(
+            title: _titleController.text,
+            amount: enteredAmount,
+            date: _selectedDate!,
+            category: _selectedCategory),
+      );
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -103,9 +114,8 @@ class _NewExpenseState extends State<NewExpense> {
                         : formatter.format(_selectedDate!),
                   ),
                   IconButton(
-                      onPressed: (){
+                      onPressed: () {
                         _presentDatePicker();
-
                       },
                       icon: const Icon(Icons.calendar_month))
                 ],
@@ -136,7 +146,7 @@ class _NewExpenseState extends State<NewExpense> {
                   }),
               const Spacer(),
               ElevatedButton(
-                onPressed:_submitExpenseData,
+                onPressed: _submitExpenseData,
                 child: const Text('Save Expense'),
               ),
               // Uses all the space available in between
