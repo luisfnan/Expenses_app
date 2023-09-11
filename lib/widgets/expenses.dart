@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:expense_tracker/entities/category.dart';
 import 'package:flutter/material.dart';
 import '../entities/expense.dart';
@@ -33,11 +31,34 @@ class _ExpensesState extends State<Expenses> {
       builder: (ctx) => NewExpense(_addExpense),
     );
   }
-  void _addExpense(Expense expense){
+
+  void _addExpense(Expense expense) {
     setState(() {
       _registerExpenses.insert(0, expense);
     });
   }
+
+  void _removeExpenses(Expense expense) {
+    final idx = _registerExpenses.indexOf(expense);
+    setState(() {
+      _registerExpenses.remove(expense);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              setState(() {
+                _registerExpenses.insert(idx, expense);
+              });
+            }),
+        duration: const Duration(seconds: 3),
+        content: const Text('Expense deleted.'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,16 +66,31 @@ class _ExpensesState extends State<Expenses> {
         title: const Text('Expense Tracker'),
         actions: [
           IconButton(
-              onPressed: _openExpensesOverlay, icon: const Icon(Icons.add))
+              style: IconButton.styleFrom(foregroundColor: Colors.white),
+              onPressed: _openExpensesOverlay,
+              icon: const Icon(Icons.add))
         ],
       ),
       body: Column(
         children: [
-          const Text('Main expenses'),
+          Container(
+            margin: const EdgeInsets.all(15),
+            child: const Text(
+              'Main expenses',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
+            ),
+          ),
           Expanded(
-              child: ExpensesList(
-            expensesList: _registerExpenses,
-          ))
+            child: _registerExpenses.isNotEmpty
+                ? ExpensesList(
+                    expensesList: _registerExpenses,
+                    onRemove: _removeExpenses,
+                  )
+                : const Center(
+                    child: Text(
+                        'No expenses found. Use the plus button to add a new one!'),
+                  ),
+          ),
         ],
       ),
     );

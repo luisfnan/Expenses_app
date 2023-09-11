@@ -150,7 +150,7 @@ class _NewExpenseState extends State<NewExpense> {
                 child: const Text('Save Expense'),
               ),
               // Uses all the space available in between
-              ElevatedButton(
+              TextButton(
                   style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
                   onPressed: () {
                     Navigator.pop(context);
