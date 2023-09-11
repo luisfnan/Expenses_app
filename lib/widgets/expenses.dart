@@ -1,4 +1,5 @@
 import 'package:expense_tracker/entities/category.dart';
+import 'package:expense_tracker/widgets/chart/chart.dart';
 import 'package:flutter/material.dart';
 import '../entities/expense.dart';
 import 'expenses_list/expenses_list.dart';
@@ -47,7 +48,8 @@ class _ExpensesState extends State<Expenses> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         action: SnackBarAction(
-            label: 'Undo',
+          textColor: Colors.blue,
+            label: 'Udo',
             onPressed: () {
               setState(() {
                 _registerExpenses.insert(idx, expense);
@@ -73,11 +75,15 @@ class _ExpensesState extends State<Expenses> {
       ),
       body: Column(
         children: [
+          Chart(expenses: _registerExpenses),
           Container(
             margin: const EdgeInsets.all(15),
             child: const Text(
               'Main expenses',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Expanded(
